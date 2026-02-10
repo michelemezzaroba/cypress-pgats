@@ -19,15 +19,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Cypress tests with Allure
-        run: npm run cy:run
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          install: true
 
       - name: Generate Allure report
-        run: npm run allure:generate
+        run: |
+          npm install -D allure-commandline
+          npx allure generate --clean
 
+      # Salva o relatório para download no Actions
       - name: Upload Allure report as artifact
         uses: actions/upload-artifact@v3
         with:
